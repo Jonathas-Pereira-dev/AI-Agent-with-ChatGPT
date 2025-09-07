@@ -1,0 +1,347 @@
+{
+  "name": "Agente de IA com ChatGPT",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Inicio\n(Trigger: Horário, mensagem, formulário...)\n\n*Mensagem (Telegram ou WhatsApp)\n\n*Usuário (via telegram, WhatsApp ou formulário)\n\n*Sistema (via Schedule: \"5h da manhã\")\n\n*Contexto: Nome, Local, Tempo disponível.",
+        "height": 576
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -4256,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "f98bfed5-e625-48d6-acd9-7db3bd4b4987",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## AGENTE\n\n* Papel do agente",
+        "height": 336,
+        "width": 880
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3984,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "ff3e4f33-7d44-41cc-b289-4e109c8c36b2",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## LLM\n\n*GPT-4 / Claude/ Gemini",
+        "height": 224,
+        "width": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3984,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "4cc81da4-40af-4137-b4de-8cd34bd5cd3a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## MEMÓRIA\n\n* Nome do usuário\n* Últimas interações",
+        "height": 224,
+        "width": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3760,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "decec26b-29cc-4ffe-93bc-737d538b670b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## APIs",
+        "height": 224,
+        "width": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3536,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "e05c4636-1d53-49ab-84fb-7af783e7cf54",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Tools\n",
+        "height": 224,
+        "width": 208
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3312,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "194f833f-3f7e-4686-b527-fb3160b7d257",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## OUTPUT\n\n*Mensagem (Telegram ou WhatsApp)\n\n*Usuário (via telegram, WhatsApp ou formulário)\n\n*Sistema (via Schedule: \"5h da manhã\")\n\n*Contexto: Nome, Local, Tempo disponível.",
+        "height": 576
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3072,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "51d68db4-345f-4b18-af97-c672f8d8cb93",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=[Role]\nVocê é um assistente de finanças pessoais. Seu único objetivo é registrar despesas informadas pelo usuário.\n[Task]\n1. Receba a mensagem do usuário contendo um gasto.\n2. Identifique e extraia:\n   - Data do gasto (DD/MM/AAAA)\n   - Descrição do item\n   - Valor\n   - Moeda (BRL)\n   - Nome do fornecedor\n   - Tipo de despesa (pessoal ou empresarial)\n3. Se a moeda for BTC (Bitcoin), use a ferramenta de conversão antes de registrar o valor em BRL.\n4. Use a ferramenta de planilha para registrar os dados.\n[Tools]\n- Conversor de BTC: Retorna o valor atual de 1 BTC em BRL.\n- Planilha: Campos necessários — Data, Item, Valor (em BRL), Fornecedor, Tipo de Despesa.\n[Constraints]\n- Não responda nada fora do escopo de controle de despesas.\n- Se for questionado sobre outro assunto, diga: “Sou um assistente de controle financeiro e só posso registrar despesas.”\n- Nunca forneça respostas aleatórias.\n- Use a data atual como referência se o usuário não especificar.\n[Output]\nApós salvar, responda de forma curta e clara:\n\"Despesa registrada: [Item] – R$[valor convertido] em [data].\"\nExemplo de resposta:\n\"Despesa registrada: Pizza – R$52,30 em 17/06/2025.\"\n\nHojé é: {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -3680,
+        -208
+      ],
+      "id": "eda44c55-899f-4caf-9ece-f54c1d784ac8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -4208,
+        0
+      ],
+      "id": "b359e5cb-0968-43ac-8c39-f26aada04437",
+      "name": "When chat message received",
+      "webhookId": "baacf3a9-e6de-46fd-a090-9ccec2a682ba"
+    },
+    {
+      "parameters": {
+        "model": "meta-llama/llama-4-maverick-17b-128e-instruct",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -3904,
+        144
+      ],
+      "id": "5660f9f0-b856-4b73-b8ba-2620543ce046",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "bAIprFSCBbibzY4I",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 2
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -3712,
+        144
+      ],
+      "id": "d6f766c9-5aad-4bd8-b5f6-b669bffa946e",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1kkIeaT3V29qUlSOiBG7u8SWCHhanTmG1ne13RtKxwtc",
+          "mode": "list",
+          "cachedResultName": "FINANCEIROPROJETON8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kkIeaT3V29qUlSOiBG7u8SWCHhanTmG1ne13RtKxwtc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kkIeaT3V29qUlSOiBG7u8SWCHhanTmG1ne13RtKxwtc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Date', ``, 'string') }}",
+            "Item": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Item', ``, 'string') }}",
+            "Valor ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Valor_', ``, 'string') }}",
+            "Fornecedor": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Fornecedor', ``, 'string') }}",
+            "Tipo de despesa": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tipo_de_despesa', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Item",
+              "displayName": "Item",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Valor ",
+              "displayName": "Valor ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Fornecedor",
+              "displayName": "Fornecedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tipo de despesa",
+              "displayName": "Tipo de despesa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -3264,
+        112
+      ],
+      "id": "a80d9c23-dcdf-49be-8c1b-36e6d6a2dd44",
+      "name": "Planilhas",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FFBlT040mAM5r8Zo",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.coinbase.com/v2/prices/BTC-BRL/spot",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        -3488,
+        112
+      ],
+      "id": "47eb0c2a-6100-4e65-ac90-c9030c0253c4",
+      "name": "APIBitcoin"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Planilhas": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "APIBitcoin": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "487377f3-a310-4a05-8de6-99fb1764a703",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "01e7b88d45aec19dbf1c1967eab747cc79e7514da45c7a150d90fb5775fc5056"
+  },
+  "id": "Bb1yGoHtDmlDU0Uf",
+  "tags": []
+}
